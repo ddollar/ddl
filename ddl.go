@@ -1,6 +1,10 @@
 package ddl
 
-import "io"
+import (
+	"io"
+
+	"golang.org/x/exp/constraints"
+)
 
 func If[T any](condition bool, thenValue, elseValue T) T {
 	if condition {
@@ -8,6 +12,19 @@ func If[T any](condition bool, thenValue, elseValue T) T {
 	}
 
 	return elseValue
+}
+
+func Mean[T constraints.Float | constraints.Integer](values []T) T {
+	if len(values) == 0 {
+		return T(0)
+	}
+
+	var sum T
+	for _, v := range values {
+		sum += v
+	}
+
+	return sum / T(len(values))
 }
 
 type multiWriteCloser struct {
